@@ -37,11 +37,17 @@ export const decodeFilePathFromAbsolute = (filePath: string) => {
 
 export const filePathToFileURL = (filePath: string) => 'file://' + encodeURI(filePath);
 
+/** Return the POSIX formatted "filePath" based on the file URL */
 export const fileURLToFilePath = (fileURL: string) => {
   if (!fileURL.startsWith('file://')) {
     throw new Error('Not a file URL');
   }
-  return decodeURI(fileURL.slice('file://'.length));
+
+  const filePath = decodeURI(fileURL.slice('file://'.length));
+
+  // File URL's always start with the pathname separator (`/`), which is valid as root on POSIX systems.
+  // On UNIX/Windows systems, this root `/` separator is invalid and needs to be removed.
+  return ABSOLUTE_WIN32_PATH_REGEXP.test(filePath) ? filePath.slice(1) : filePath;
 };
 
 // for filePath
