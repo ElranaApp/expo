@@ -48,6 +48,7 @@ import { BundleAssetWithFileHashes, ExportAssetMap } from '../../../export/saveA
 import { Log } from '../../../log';
 import { env } from '../../../utils/env';
 import { CommandError } from '../../../utils/errors';
+import { toPosixPath } from '../../../utils/filePath';
 import { getFreePortAsync } from '../../../utils/port';
 import { BundlerDevServer, BundlerStartOptions, DevServerInstance } from '../BundlerDevServer';
 import {
@@ -715,7 +716,8 @@ export class MetroBundlerDevServer extends BundlerDevServer {
 
     // HACK: Maybe this should be done in the serializer.
     const clientBoundariesAsOpaqueIds = clientBoundaries.map((boundary) =>
-      path.relative(serverRoot, boundary)
+      // NOTE(cedric): module specifiers / IDs are always formatted in POSIX format
+      toPosixPath(path.relative(serverRoot, boundary))
     );
     const moduleIdToSplitBundle = (
       bundle.artifacts
