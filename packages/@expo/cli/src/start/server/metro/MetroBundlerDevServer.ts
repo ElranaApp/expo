@@ -48,7 +48,6 @@ import { BundleAssetWithFileHashes, ExportAssetMap } from '../../../export/saveA
 import { Log } from '../../../log';
 import { env } from '../../../utils/env';
 import { CommandError } from '../../../utils/errors';
-import { toPosixPath } from '../../../utils/filePath';
 import { getFreePortAsync } from '../../../utils/port';
 import { BundlerDevServer, BundlerStartOptions, DevServerInstance } from '../BundlerDevServer';
 import {
@@ -69,7 +68,6 @@ import { RuntimeRedirectMiddleware } from '../middleware/RuntimeRedirectMiddlewa
 import { ServeStaticMiddleware } from '../middleware/ServeStaticMiddleware';
 import {
   convertPathToModuleSpecifier,
-  createBundleUrlOsPath,
   createBundleUrlPath,
   ExpoMetroOptions,
   getAsyncRoutesFromExpoConfig,
@@ -511,7 +509,7 @@ export class MetroBundlerDevServer extends BundlerDevServer {
     });
 
     // Use fully qualified URL with all options to represent the file path that's used for source maps and HMR. This prevents collisions.
-    const filename = createBundleUrlOsPath({
+    const filename = createBundleUrlPath({
       ...opts,
       mainModuleName: resolvedEntryFilePath,
     });
@@ -716,8 +714,7 @@ export class MetroBundlerDevServer extends BundlerDevServer {
 
     // HACK: Maybe this should be done in the serializer.
     const clientBoundariesAsOpaqueIds = clientBoundaries.map((boundary) =>
-      // NOTE(cedric): module specifiers / IDs are always formatted in POSIX format
-      toPosixPath(path.relative(serverRoot, boundary))
+      path.relative(serverRoot, boundary)
     );
     const moduleIdToSplitBundle = (
       bundle.artifacts
