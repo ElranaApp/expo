@@ -259,6 +259,16 @@ export function createBundleUrlPath(options: ExpoMetroOptions): string {
   return `/${encodeURI(options.mainModuleName.replace(/^\/+/, ''))}.bundle?${queryParams.toString()}`;
 }
 
+/**
+ * Create a "os path", formatted with POSIX separators, that can be used to refer to files directly.
+ * TODO(cedric): refactor and consolidate this with `createBundleUrlPath` - possibly taking file URIs into account
+ */
+export function createBundleUrlOsPath(options: ExpoMetroOptions): string {
+  const queryParams = createBundleUrlSearchParams(options);
+  const mainModuleName = toPosixPath(options.mainModuleName);
+  return `${mainModuleName}.bundle?${queryParams.toString()}`;
+}
+
 export function createBundleUrlSearchParams(options: ExpoMetroOptions): URLSearchParams {
   const {
     platform,
