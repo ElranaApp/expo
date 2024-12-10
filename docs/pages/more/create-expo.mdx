@@ -1,69 +1,79 @@
----
-title: create-expo-app
-maxHeadingDepth: 4
-description: A command-line tool to create a new Expo and React Native project.
----
-
-import { Terminal } from '~/ui/components/Snippet';
-import { Tab, Tabs } from '~/ui/components/Tabs';
-
-`create-expo-app` is a command-line tool to create and set up a new Expo and React Native project. This tool simplifies the initialization process by providing various templates to get started quickly without the need for manual configuration.
 
 ## Create a new project
 
 To create a new project, run the following command:
 
-<Tabs>
+javascript
+import React, { useState } from 'react';
+import { StyleSheet, Text, View, TextInput, Button, Alert } from 'react-native';
 
-<Tab label="npx">
+const App = () => {
+  const [name, setName] = useState('');
+  const [phone, setPhone] = useState('');
+  const [date, setDate] = useState('');
 
-<Terminal cmd={['$ npx create-expo-app@latest']} />
+  const handleSubmit = () => {
+    if (name && phone && date) {
+      Alert.alert('Programare realizată!', 
+Nume: ${name}\nTelefon: ${phone}\nData: ${date}
+);
+      // Aici poți adăuga logica pentru a salva programarea
+    } else {
+      Alert.alert('Eroare', 'Te rog completează toate câmpurile!');
+    }
+  };
 
-</Tab>
+  return (
+    
+      Programare Reparație Tapițerie
+              style={styles.input}
+        placeholder="Numele tău"
+        value={name}
+        onChangeText={setName}
+      />
+              style={styles.input}
+        placeholder="Numărul de telefon"
+        value={phone}
+        onChangeText={setPhone}
+        keyboardType="phone-pad"
+      />
+              style={styles.input}
+        placeholder="Data programării (ex: 10/12/2024)"
+        value={date}
+        onChangeText={setDate}
+      />
+      
 
-<Tab label="Yarn">
 
-<Terminal cmd={['$ yarn create expo-app']} />
+    
+  );
+};
 
-</Tab>
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    padding: 20,
+  },
+  title: {
+    fontSize: 24,
+    marginBottom: 20,
+    textAlign: 'center',
+  },
+  input: {
+    height: 40,
+    borderColor: 'gray',
+    borderWidth: 1,
+    marginBottom: 15,
+    paddingHorizontal: 10,
+  },
+});
 
-<Tab label="pnpm">
+export default App;
 
-<Terminal cmd={['$ pnpm create expo-app']} />
 
-</Tab>
 
-<Tab label="bun">
-
-<Terminal cmd={['$ bun create expo']} />
-
-</Tab>
-
-</Tabs>
-
-Running the above command will prompt you to enter the app name of your project. This app name is also used in the app config's [`name`](/versions/latest/config/app/#name) property.
-
-<Terminal cmd={['What is your app named? my-app']} />
-
-## Options
-
-Uses the following options to customize the command behavior.
-
-### `--yes`
-
-Uses the default options to create a new project.
-
-### `--no-install`
-
-Skips installing npm dependencies or CocoaPods.
-
-### `--template`
-
-Running `create-expo-app` with a [Node Package Manager](#node-package-managers-support) initializes and sets up a new Expo project using the default template.
-
-You can use the `--template` option to select one of the following templates or pass it as an argument to the option. For example, `--template default`.
-
-| Template                                                                                              | Description                                                                                                                                                                           |
+                                     | Description                                                                                                                                                                           |
 | ----------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | [`default`](https://github.com/expo/expo/tree/main/templates/expo-template-default)                   | Default template. Designed to build multi-screen apps. Includes recommended tools such as Expo CLI, Expo Router library and TypeScript configuration enabled. Suitable for most apps. |
 | [`blank`](https://github.com/expo/expo/tree/main/templates/expo-template-blank)                       | Installs minimum required npm dependencies without configuring navigation.                                                                                                            |
